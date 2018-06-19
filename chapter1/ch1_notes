@@ -1,0 +1,81 @@
+Chapter 1 Notes:
+
+3 different types of machine learning
+  1. unsupervised learning (UL)
+  2. supervised learning (SL)
+  3. reinforcement learning (RL)
+
+
+Supervised Learning:
+
+supervised learning goal: learn from a model from labeled training data
+that allows us to make predictions about unseen or future data.
+
+In SL, sample data desired output labels are already known.
+Example, a set of emails marked spam or not spam are already correctly labeled.
+
+A subcategory of SL is regression, "where the outcome signal is a continuous
+value". (Also called regression analysis)
+
+Another subcategory of SL is classification where the goal is to predict
+the categorical class labels of new instances based on past observations.
+Email spam would be an example of a binary classification task.
+
+Character recognition would be an example of multi-class classification, where
+input (aA-zZ) can be categorized by the predictive model under the appropriate
+letter.
+
+In Regression Analysis, there are predictor (explanatory) variables and a
+continuous response variable (outcome). The goal is to find a relationship
+between those variables to predict an outcome.
+
+Example: Math SAT score prediction of students. An explanatory variable
+would be time spent studying and the final score would be response variable.
+The model learned could be used to predict the scores of future students.
+
+Linear regression takes a predictor (x) and a response (y). On the graph,
+a straight line can be fitted to the data to minimize the distance between
+the sample points and the line.
+
+
+Reinforcement Learning:
+
+reinforcement learning goal: develop an system/agent that improves it's
+performance (actions) based on interactions in the environment
+
+There is reward signal that isn't inherently right or wrong. The signal
+is measured by how well the action was measured by the reward function. An
+agent can use RL to learn a series of actions that maximizes reward through
+trial-n-error or deliberate planning in the agent's environment.
+
+Example: Chess engine, where player-bot is the agent, environment (state space)
+is the chess board, moves are the actions, and the reward is win/lose.
+
+
+
+Unsupervised Learning:
+
+UL works with unlabeled data, where using UL techniques extracts meaningful
+info without a known outcome variable (supervised learning) or a
+reward function (reinforcement learning).
+
+Clustering: organizes unknown data into groups.
+
+Example: Marketers can discover customer groups based on interests in order
+to develop distinct marketing programs
+
+dimensionality: an observation that comes with a high number of measurements
+or features
+
+Dimensionality Reduction: an approach of feature pre-processing to remove
+noise from data. Helps with limited storage space and computational performance
+of certain ML algorithms. This method can also be used to visualize data, such
+as compressing 3D data onto a 2D subspace.
+
+
+
+Feature Matrices: each row is a sample where each feature is stored as separate
+column
+
+An ML system: data preprocessing-> learning -> evaluation (model) -> prediction (new data)
+

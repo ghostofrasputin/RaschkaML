@@ -1,0 +1,75 @@
+Chapter 2 Notes:
+
+Anatomy of a Neuron:
+
+Neurons: the interconnected nerve cells in the brain that are involved in
+the processing and transmitting of chemical and electrical signals
+
+Dendrites (dendron [Greek - tree]): branched protoplasmic extensions of a nerve
+cell that propagate electrochemical stimulation from other nerve cells 
+
+Myelin sheath: lipid-rich substance surrounds the axon of some nerve cells,
+forming an electrically insulating layer
+
+Axon (axis): conducts electrical impulses away from the nerve cell body
+Axon synaptic terminals: the neurotransmitters at the end of the axon
+
+Synapse: small gap structure between neurons that permits a neuron to pass
+an electrochemical signal to another neuron
+
+Input -> Dendrites -> Soma-> Axon (terminals) -> output 
+
+A neuron can be artificially constructed as a simple logic gate with binary
+outputs, multiple signals arriving at the dendrites, and then integrated into
+the cell body. If the accumulated signal passes a threshold an output signal
+is generated that will be passed on by the axon.
+
+
+Perceptron:
+algorithm to automatically learn weight coefficients that are then multiplied 
+with the input features in order to make a decision of whether a neuron fires 
+or not. Essentially, a binary classification task. 
+
+Rosenblatt Perceptron Algorithm:
+
+1. initialize the weights to 0 or small random numbers
+2. For each training sample x(i) perform the following steps:
+      1. Compute the output value
+      2. Update the weights 
+
+Convergence of the perceptron is only guaranteed if the two classes are linearly
+separable and the learning rate is sufficiently small. Set an epoch, maximum 
+number of passes over a dataset or a threshold for a number of 
+misclassifications.
+
+
+One-vs-All (OvA) or One-vs-Rest (OvR): technique used to extend binary 
+classifier to multi-class problems. Train one classifier per class where the 
+particular class is positive and all others are negative. If we classify a 
+new data sample, we use our n classifiers and assign the class label with the
+highest relation to a particular sample. 
+
+Example: A perceptron can use OvA to choose a class label that is associated
+with the largest absolute ne input value.
+
+
+ADAptive LInear NEuron (Adaline) class
+  another single-layer neural network
+
+Frank Rosenblatt - perceptron 1957
+Bernard Widrow (and Ted Hoff) - adaline 1960
+
+Adaline illustrates the key concept of defining and minimizing cost functions.
+That laid the groundwork for more advanced ML algorithms, like logistic
+regression and support vector machines ( and other regression models).
+
+Key difference between Perceptron and Adaline:
+Widrow-Hoff rule -> weights are updated based on a linear activation function
+rather than a unit step function like the perceptron.
+
+
+
+  
+
+
+
