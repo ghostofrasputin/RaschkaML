@@ -1,8 +1,12 @@
-# Training a perceptron model on an iris data set
+#------------------------------------------------------------------------------#
+# Training a perceptron model on an iris data set                              #
+#------------------------------------------------------------------------------#
 
 import numpy as np
 import pandas as pd
 import perceptron as p
+import adaline_gd as agd
+import adaline_sgd as asgd
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
@@ -60,8 +64,66 @@ plot_decision_regions(X, y, ppn)
 plt.xlabel('sepal length [cm]')
 plt.ylabel('petal length [cm]')
 plt.legend(loc='upper left')
-plt.show()                    
+plt.show()
 
+
+#------------------------------------------------------------------------------#
+# Training gradient descent adaline model on the iris dataset                  #
+#------------------------------------------------------------------------------#
+
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8,4))
+ada1 = agd.AdalineGD(eta=0.01, n_iter=10).fit(X,y)
+ada2 = agd.AdalineGD(eta=0.0001, n_iter=10).fit(X,y)
+for i in range(2):
+    ada0 = ada1 if i==0 else ada2
+    cost = ada0.cost_
+    ax[i].plot(range(1, len(cost) + 1), np.log10(cost), marker = 'o')
+    ax[i].set_xlabel('Epochs')
+    ax[i].set_ylabel('Sum Squared Error')
+    title = "Eta - 0.01" if i==0 else "Eta - 0.0001"
+    ax[i].set_title(title)
+plt.show()
+
+# left plot:
+# ada 1 (eta - 0.01) shows us what happens when we get a learning rate 
+# that is too big. instead of minimzing the CF, the error becomes larger every 
+# epoch since it overshot the global minimum. 
+# 
+# right plot:
+# ada 2 (eta - 0.0001) is too small so even though the cost decreases it would
+# take a large number of epochs to converge
+
+X_std = np.copy(X)
+X_std[:,0] = (X[:,0] - X[:,0].mean()) / X[:,0].std()
+X_std[:,1] = (X[:,1] - X[:,1].mean()) / X[:,1].std()
+ada3 = agd.AdalineGD(eta=0.01, n_iter=15).fit(X_std,y)
+plot_decision_regions(X_std, y, ada3)
+plt.title('Adaline - Gradient Descent')
+plt.xlabel('sepal length [standardized]')
+plt.ylabel('petal length [standardized]') 
+plt.legend(loc='upper left')
+plt.show()
+plt.plot(range(1, len(ada3.cost_)+1), ada3.cost_, marker='o')
+plt.xlabel('Epochs')
+plt.ylabel('Sum Squared Error')
+plt.show()
+            
+
+#------------------------------------------------------------------------------#
+# Training stochastic gradient descent adaline model on the iris dataset       #
+#------------------------------------------------------------------------------#
+
+ada4 = asgd.AdalineSGD(eta=0.01, n_iter=15, random_state=1).fit(X_std, y)
+plot_decision_regions(X_std, y, ada4)
+plt.title('Adaline - Stochastic Gradient Descent')
+plt.xlabel('sepal length [standardized]')
+plt.ylabel('petal length [standardized]') 
+plt.legend(loc='upper left')
+plt.show()
+plt.plot(range(1, len(ada4.cost_)+1), ada4.cost_, marker='o')
+plt.xlabel('Epochs')
+plt.ylabel('Average Cost')
+plt.show()
 
 
 

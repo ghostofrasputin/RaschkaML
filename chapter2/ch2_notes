@@ -53,7 +53,7 @@ Example: A perceptron can use OvA to choose a class label that is associated
 with the largest absolute ne input value.
 
 
-ADAptive LInear NEuron (Adaline) class
+ADAptive LInear NEuron (Adaline)
   another single-layer neural network
 
 Frank Rosenblatt - perceptron 1957
@@ -66,6 +66,77 @@ regression and support vector machines ( and other regression models).
 Key difference between Perceptron and Adaline:
 Widrow-Hoff rule -> weights are updated based on a linear activation function
 rather than a unit step function like the perceptron.
+
+linear activation function learns the weights
+quantizer (like a unit step function) can predict class labels
+
+weights -> net input function -> linear activation function -> quantizer -> output
+    ^                                                         v
+    ^---------------------------------error--------------------
+    
+Adaline uses the continuous valued output from linear activation function to
+compute the model error and update the weights, rather than binary class labels.
+
+In SL, an objective function is often a key ingredient to be optimized during
+the learning process, the cost function (CF) to minimize. 
+
+Adaline uses the CF, Sum of Squared Errors (SSE), between the calculated 
+outcomes and true class labels.
+
+J(w) = 1/2 E(i) (y(i) - phi * (z(i))) ^ 2
+
+This CF is differentiable and convex.
+Since the CF is convex, an algorithm called gradient descent can be used
+to find the weights that minimize the CF.
+
+Gradient Descent takes a step away from the gradient (slope) of the CF. The step
+is defined as the negative gradient multiple by the learning rate. To compute 
+the gradient, find the partial derivative of the CF for each weight. 
+
+partial derivative: a derivative of a function of two or more variables with 
+respect to one variable, the other(s) being treated as constant
+
+w := w + -(eta) * J(w)
+
+Some ML algorithms need feature scaling for optimal performance, such
+as gradient descent.
+
+One method of feature scaling standardization
+
+Standardization gives data the property of a standard normal distribution.
+jth feature - sample mean / standard deviation
+
+
+
+Stochastic Gradient Descent (SGD):
+also called iterative or on-line gradient descent
+
+Batch Gradient Descent can be computationally costly since the whole training
+set needs to be re-evaluated each time a step is taken towards the global min.
+
+SGD is a common alternative that updates the weights incrementally for each
+training sample instead of updating the weights based on the sum of the 
+accumulated errors over all the samples x(i).
+
+SGD can be considered an approximation of GD, but reaches convergence much
+faster because of the frequent weight updates.
+
+important to shuffle data before each epoch to prevent cycles
+
+Eta is often replaced with an "adaptive learning rate" that decreases over 
+time, such that: c1 / iterations + c2, where c1 and c2 are constant.
+
+SGD does not reach global min, but an adaptive learning rate gets closer 
+results.
+
+SGD is great for online data coming in on the fly. The training data can also
+be discarded after updating the model if space is an issue.
+
+Mini-Batch-Learning: a compromise between GD and SGD, where GD is applied
+to subsets of the data (like 50 samples at a time). Convergence is reached
+faster, because mini-batches are updated more frequently. Also, replaces
+for loop with vectorized operations for computation efficiency. 
+    
 
 
 
