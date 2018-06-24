@@ -1,0 +1,85 @@
+Chapter 3 Notes:
+
+There is no perfect ML algorithm for every scenario. The best strategy often
+uses a handful of algorithms to select the best model for a particular problem.
+
+5 steps for training a ML algorithm:
+  1. selection of features (pre-processing)
+  2. choosing a performance metric
+  3. choosing a classifier and optimization algorithm
+  4. evaluating the performance of the model
+  5. tuning the algorithm
+  
+Perceptrons fail to converge when the classes are not perfectly linearly 
+separable. Since the weights are continuously being updated there is always
+at least one misclassified sample present in each epoch. Changing the learning
+rate and max epoch won't allow convergence with this classifier in most 
+scenarios like the Iris data set. 
+
+
+
+Logistic Regression:
+(model of classification, not regression)
+
+Logistic Regression is a classification model is easy to implement and
+performs well on linearly separable classes. While it's like the Perceptron
+and Adaline in that it's a linear model for binary classification, it also
+has the advantage of being used for multiclass classification using the OvR
+technqiue.
+
+Reminder from Chapter 2 on OvR:
+One-vs-All (OvA) or One-vs-Rest (OvR): technique used to extend binary 
+classifier to multi-class problems. Train one classifier per class where the 
+particular class is positive and all others are negative. If we classify a 
+new data sample, we use our n classifiers and assign the class label with the
+highest relation to a particular sample. 
+
+Odds Ratio: odds in favor of a particular event, written as p/1-p, where p
+stands for the probability of the positive event (the event we want to predict).
+
+Logit function: logit(p) = log(p/1-p)
+ 
+The logit function is the logarithm of the odds ratio. Takes input values
+in the range 0-1 and transforms them to values over the entire real number
+range. Shows a linear relationship between feature values and log-odds.
+
+Logit( p(y=1 | x) ) = E(i) w(i)x(i)
+
+p(y=1 | x) is the conditional probability that a particular sample belongs
+to class 1 given it's features x.
+
+Predicting the probability that a certain sample belongs to a particular class
+is the inverse form of the logit function, or the logistic function or sigmoid
+function due to it's characteristic S-shape.
+
+o(z) = 1 / 1 + E^(-z) = e^x / e^x + 1
+
+z = E(i) w(i)x(i)
+z is the net input or the linear combination of weights and sample features.
+
+Adaline uses the identity function as the activation function, and in logistic
+regression the sigmoid function is the activation function. The predicted
+probability can be converted into a binary outcome via a quantizer, where the
+threshold is the y-intercept of the sigmoid function.
+
+Applications of Logistic Regression:
+Logistic regression is used in weather forecasting for predicting the chance
+of a particular type of weather. It can also be used to predict that a patient
+has a particular disease given certain symptoms. 
+
+Overfitting and underfitting is common problem in ML, where a model performs 
+well on training data, but not on the unseen test data. In these cases the 
+model is too complex or not complex enough to classify the pattern in the
+training data.
+
+
+
+
+
+
+
+
+
+
+
+  
