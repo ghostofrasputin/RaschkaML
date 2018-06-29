@@ -1,18 +1,29 @@
 #------------------------------------------------------------------------------#
-# Perceptron with skikit-learn                                                 #
+# Chapter 3: Machine Learning Classifiers using Scikit-Learn                   #
 #------------------------------------------------------------------------------#
 
+# numpy
 import numpy as np
+
+# matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+
+# sklearn 
 from sklearn import datasets
-from sklearn.linear_model import Perceptron
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-
 #from sklearn.cross_validation import train_test_split # deprecated
+
+# sklearn models
+from sklearn.svm import SVC
+from sklearn.linear_model import Perceptron
+from sklearn.linear_model import LogisticRegression
+
+#------------------------------------------------------------------------------#
+# Perceptron with skikit-learn                                                 #
+#------------------------------------------------------------------------------#
 
 sc = StandardScaler()
 iris = datasets.load_iris()
@@ -104,10 +115,95 @@ lr = LogisticRegression(C=1000.0, random_state=0)
 lr.fit(X_train_std, y_train)
 plot_decision_regions(X_combined_std, y_combined, classifier=lr, test_idx=range(105,150))
 plt.xlabel("petal length [standardized]")
-plt.xlabel("petal width [standardized]")
+plt.ylabel("petal width [standardized]")
 plt.legend(loc="upper left")
 plt.show()
 
+#------------------------------------------------------------------------------#
+# L2 regularization for Logistic Regression                                    #
+#   L2 reg. path of the two weight coefficents                                 #
+#------------------------------------------------------------------------------#
+
+# Note: random_state paramter is a seed to ensure repeatable results
+
+# weight coeffcients shrink if the paramter C is decreased, thus increasing
+# the regularization strength
+
+weights, params = [], []
+
+for c in np.arange(-5, 5):
+    lr = LogisticRegression(C=10.0**c, random_state=0)
+    lr.fit(X_train_std, y_train)
+    weights += [lr.coef_[1]]
+    params += [10.0**c]
+
+weights = np.array(weights)
+plt.plot(params, weights[:, 0], label="petal length")
+plt.plot(params, weights[:, 1], linestyle="--", label="petal width")
+plt.ylabel("weight coeffcients")
+plt.xlabel("C")
+plt.legend(loc="upper left")
+plt.xscale("log")
+plt.show()
+
+#------------------------------------------------------------------------------#
+# Support Vector Machines (SVM) with scikit-learn                              #
+#------------------------------------------------------------------------------#
+
+svm = SVC(kernel="linear", C=1.0, random_state=0)
+svm.fit(X_train_std, y_train)
+plot_decision_regions(X_combined_std, y_combined, classifier=svm, test_idx=range(105,150))
+plt.xlabel('petal length [standardized]')
+plt.ylabel('petal width [standardized]')
+plt.legend(loc='upper left')
+plt.show()
+
+# Scikit-learn offers stochastic gradient descent variations of the perceptron,
+# logistic regression, and support vector machines in the SGD Classifier class.
+#
+# from sklearn.linear_model import SGDClassifier
+# ppn = SGDClassifier(loss="perceptron")
+# lr = SGDClassifier(loss="log")
+# svm = SGDClassifier(loss="hinge")
+
+np.random.seed(0)
+X_xor = np.random.randn(200,2)
+y_xor = np.logical_xor(X_xor[:, 0] > 0, X_xor[:, 1] > 0)
+y_xor = np.where(y_xor, 1, -1)
+plt.scatter(X_xor[y_xor==1, 0], X_xor[y_xor==1, 1], c="b", marker="x", label="1")
+plt.scatter(X_xor[y_xor==-1, 0], X_xor[y_xor==-1, 1], c="r", marker="s", label="-1")
+plt.ylim(-3.0)
+plt.legend()
+plt.tight_layout()
+plt.show()
 
 
+# gamma can be understood as a cut-off paramter for the Gaussian sphere
+# if we increase the value, we increase the influence or reach of the training 
+# samples, which leads to a softer decision boundary.
+svm = SVC(kernel="rbf", random_state=0, gamma=0.10, C=10.0)
+svm.fit(X_xor, y_xor)
+plot_decision_regions(X_xor, y_xor, classifier=svm)
+plt.legend(loc="upper left")
+plt.show()
+
+# small gamma creates a soft decision boundary of the RBF kernel SVM model
+svm = SVC(kernel="rbf", random_state=0, gamma=0.2, C=1.0)
+svm.fit(X_train_std, y_train)
+plot_decision_regions(X_combined_std, y_combined, classifier=svm, test_idx=range(105,150))
+plt.xlabel('petal length [standardized]')
+plt.ylabel('petal width [standardized]')
+plt.legend(loc='upper left')
+plt.show()
+
+# although the model fits the training data very well, a classfier like this
+# will likely have a high generalization error on unseen data, so gamma
+# plays an important role in controlling overfitting
+svm = SVC(kernel="rbf", random_state=0, gamma=100.0, C=1.0)
+svm.fit(X_train_std, y_train)
+plot_decision_regions(X_combined_std, y_combined, classifier=svm, test_idx=range(105,150))
+plt.xlabel('petal length [standardized]')
+plt.ylabel('petal width [standardized]')
+plt.legend(loc='upper left')
+plt.show()
 

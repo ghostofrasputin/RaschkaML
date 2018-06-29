@@ -72,6 +72,58 @@ well on training data, but not on the unseen test data. In these cases the
 model is too complex or not complex enough to classify the pattern in the
 training data.
 
+Regularization is a useful method to handle collinearity (high correlation
+among features), filter out noise, and prevent overfitting. Basically, 
+regularization introduces additional information bias to penalize extreme
+parameter weights. L2 Regularization is an example. Features need to be
+comparable weights (through standardization and other feature scaling methods)
+in order for regularization to be effective. 
+
+In order to use, add regularization parameter to cost function.
+
+Lambda (regularization parameter) can be adjusted to increase regularization
+strength. For example, in the Logistic Regression class in scikit-learn, 
+C = 1/lambda. In this case, the regularization parameter is decreased, which
+increases the regularization strength.
+
+
+Support Vector Machines (SVM)
+
+SVMs is another widely used learning algorithm. Considered an extension
+from the perceptron algorithm. The optimization objective is to maximize the
+margin, which is defined as the distance between the separating hyperplane
+(decision boundary) and the training samples that are closest to this
+hyperplane, which are called support vectors.
+
+Decision boundaries with large margins tend to have a lower generalization error
+whereas models with small margins tend to overfit more.
+
+Using C and a slack variable the weight of the margin can be tuned, in order
+to tune the bias-variance trade-off.
+
+Logistic Regression and SVMs often yield similar results. LR tries to maximize
+the conditional likelihood of the training data, so it gets more outliers.
+SVMs care about points closest to the decision boundary (support vectors). 
+However, LR can implemented more easily and can easily updated, which is useful
+when streaming in data.
+
+SVMs can be easily kernelized to solve non-linear classification problems.
+Kernel methods create nonlinear combinations of the original features to project
+them onto a higher dimensional space via a mapping function. 
+
+One problem with the mapping function is that construction of the new features
+is computationally expensive, especially for high dimensional data. 
+
+Kernel function replaces the dot product.
+
+Radial Basis Function kernel (RBF kernel) or Gaussian kernel is widely used.
+
+The term kernel can be interpreted as a similarity function between a pair of
+samples.
+
+ 
+
+
 
 
 
