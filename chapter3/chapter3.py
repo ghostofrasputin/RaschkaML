@@ -19,6 +19,9 @@ from sklearn.model_selection import train_test_split
 # sklearn models
 from sklearn.svm import SVC
 from sklearn.linear_model import Perceptron
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 
 #------------------------------------------------------------------------------#
@@ -81,6 +84,7 @@ plot_decision_regions(X=X_combined_std, y=y_combined, classifier=ppn, test_idx=r
 plt.xlabel('petal length [standardized]')
 plt.ylabel('petal width [standardized]')
 plt.legend(loc='upper left')
+plt.title("Perceptron")
 plt.tight_layout()
 #plt.savefig('images/03_01.png', dpi=300)
 plt.show()
@@ -105,6 +109,7 @@ ax = plt.gca()
 ax.yaxis.grid(True)
 
 plt.tight_layout()
+plt.title("Sigmoid Function Example")
 plt.show()
 
 #------------------------------------------------------------------------------#
@@ -117,6 +122,7 @@ plot_decision_regions(X_combined_std, y_combined, classifier=lr, test_idx=range(
 plt.xlabel("petal length [standardized]")
 plt.ylabel("petal width [standardized]")
 plt.legend(loc="upper left")
+plt.title("Logistic Regression")
 plt.show()
 
 #------------------------------------------------------------------------------#
@@ -144,6 +150,7 @@ plt.ylabel("weight coeffcients")
 plt.xlabel("C")
 plt.legend(loc="upper left")
 plt.xscale("log")
+plt.title("L2 Regularization for LR")
 plt.show()
 
 #------------------------------------------------------------------------------#
@@ -156,6 +163,7 @@ plot_decision_regions(X_combined_std, y_combined, classifier=svm, test_idx=range
 plt.xlabel('petal length [standardized]')
 plt.ylabel('petal width [standardized]')
 plt.legend(loc='upper left')
+plt.title("Support Vector Machine")
 plt.show()
 
 # Scikit-learn offers stochastic gradient descent variations of the perceptron,
@@ -175,6 +183,7 @@ plt.scatter(X_xor[y_xor==-1, 0], X_xor[y_xor==-1, 1], c="r", marker="s", label="
 plt.ylim(-3.0)
 plt.legend()
 plt.tight_layout()
+plt.title("Random Xor Data")
 plt.show()
 
 
@@ -185,6 +194,7 @@ svm = SVC(kernel="rbf", random_state=0, gamma=0.10, C=10.0)
 svm.fit(X_xor, y_xor)
 plot_decision_regions(X_xor, y_xor, classifier=svm)
 plt.legend(loc="upper left")
+plt.title("Support Vector Machine for Xor data. 0.1 gamma")
 plt.show()
 
 # small gamma creates a soft decision boundary of the RBF kernel SVM model
@@ -194,6 +204,7 @@ plot_decision_regions(X_combined_std, y_combined, classifier=svm, test_idx=range
 plt.xlabel('petal length [standardized]')
 plt.ylabel('petal width [standardized]')
 plt.legend(loc='upper left')
+plt.title("Support Vector Machine for Iris data. 0.2 gamma")
 plt.show()
 
 # although the model fits the training data very well, a classfier like this
@@ -205,5 +216,95 @@ plot_decision_regions(X_combined_std, y_combined, classifier=svm, test_idx=range
 plt.xlabel('petal length [standardized]')
 plt.ylabel('petal width [standardized]')
 plt.legend(loc='upper left')
+plt.title("Support Vector Machine for Iris data. 100 gamma")
 plt.show()
+
+#------------------------------------------------------------------------------#
+# Decision Trees with scikit-learn                                             #
+#------------------------------------------------------------------------------#
+
+# visual comparison of the 3 impurity criteria
+
+def gini(p):
+    return p*(1-p) + (1-p)*(1-(1-p))
+
+def entropy(p):
+    return -p*np.log2(p) - (1-p)*np.log2((1-p)) 
+    
+def error(p):
+    return 1 - np.max([p, 1-p])
+    
+x = np.arange(0.0, 1.0, 0.01)
+ent = [entropy(p) if p!=0 else None for p in x]
+sc_ent = [e*0.5 if e else None for e in ent]
+err = [error(i) for i in x]
+fig = plt.figure()
+ax = plt.subplot(111)
+
+a = [ent, sc_ent, gini(x), err]
+b = ["Entropy", "Entropy (scaled)", "Gini Impurity", "Misclassification Error"]
+c = ["-", "-", "--", "-."]
+d = ["black", "lightgray", "red", "green", "cyan"] 
+for i, lab, ls, c in zip(a,b,c,d):
+    line = ax.plot(x, i, label=lab, linestyle=ls, color=c)
+
+ax.legend(loc="upper center", bbox_to_anchor=(0.5, 1.15), ncol=3, fancybox=True, shadow=False)
+ax.axhline(y=0.5, linewidth=1, color="k", linestyle="--")
+ax.axhline(y=1.0, linewidth=1, color="k", linestyle="--")
+plt.ylim([0,1.1])
+plt.xlabel("p(i=1)")
+plt.ylabel("Impurity Index")
+plt.title("Impurity Comparison")
+plt.show()
+    
+# Decision Tree
+tree = DecisionTreeClassifier(criterion="entropy", max_depth=3, random_state=0)
+tree.fit(X_train, y_train)
+X_combined = np.vstack((X_train, X_test))
+y_combined = np.hstack((y_train, y_test))
+plot_decision_regions(X_combined, y_combined, classifier=tree, test_idx=range(105,150))
+plt.xlabel('petal length [cm]')
+plt.ylabel('petal width [cm]')
+plt.legend(loc='upper left')
+plt.title("Decision Tree")
+plt.show()
+
+
+#------------------------------------------------------------------------------#
+# Random Forests with scikit-learn                                             #
+#------------------------------------------------------------------------------#
+
+# Decision Tree
+# uses 10 decision trees via n_estimators
+# entropy criterion as impurity measure to split the nodes
+# n_jobs parallize the model training using multiple cores of our computer
+#   ^ isn't necassry because of the small training set and small number of trees
+forest = RandomForestClassifier(criterion="entropy", n_estimators=10, random_state=1, n_jobs=2)
+forest.fit(X_train, y_train)
+plot_decision_regions(X_combined, y_combined, classifier=forest, test_idx=range(105,150))
+plt.xlabel('petal length')
+plt.ylabel('petal width')
+plt.legend(loc='upper left')
+plt.title("Random Forest")
+plt.show()
+
+#------------------------------------------------------------------------------#
+# K-Nearest Neighbors scikit-learn                                             #
+#------------------------------------------------------------------------------#
+
+knn = KNeighborsClassifier(n_neighbors=5, p=2, metric="minkowski")
+knn.fit(X_train_std, y_train)
+plot_decision_regions(X_combined_std, y_combined, classifier=knn, test_idx=range(105,150))
+plt.xlabel('petal length [standardized]')
+plt.ylabel('petal width [standarized]')
+plt.legend(loc='upper left')
+plt.title("K-Nearest Neighbors")
+plt.show()
+
+
+
+
+
+
+
 

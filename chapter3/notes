@@ -121,6 +121,119 @@ Radial Basis Function kernel (RBF kernel) or Gaussian kernel is widely used.
 The term kernel can be interpreted as a similarity function between a pair of
 samples.
 
+
+Decision Tree Learning
+
+DTs are great models if we care about interpretability, meaning we can break 
+down our data by making decisions based on a series of questions.
+
+Example:
+          Work to do?
+      Y /        N  \
+      Stay In       Outlook?
+                   s/  c|  r\ 
+              beach   run    friends busy?
+                              Y /      N \
+                            Stay In     Go to movies
+
+Based on the features of a training set, the DT model learns a series of
+questions to infer the class labels of the samples.
+
+With the DT algorithm, starting at the root, split the data on the feature
+that results in the largest information gain (IG). Iterate the splitting
+process at each child node until the leaves belong to the same class. This can
+result in a deep tree with many nodes, which may cause overfitting, so the tree
+is pruned by setting a max limit for the depth of the tree.
+
+Scikit-learn has binary decision trees (BDT) to reduce combinational search 
+space.
+
+3 impurity measures or splitting criteria for BDTs:
+Gini impurity
+entropy
+classification error
+
+Gini impurity: maximal if classes are perfectly mixed
+
+entropy: 0 if all samples at a node belong to the same class, and 1 when
+we have a uniform class distribution. Entropy attempts to maximize the mutual
+information in the tree.
+
+note:
+Gini and entropy yield similar results. Better to try pruning techniques rather
+than focus evaluating trees based on different criteria.
+
+classification error: useful for pruning, but not growing a DT, since it is
+less sensitive to changes in the class probabilities of the nodes.
+
+DTs can build complex decision boundaries by dividing the feature space into
+rectangles. Deeper the decision tree, deeper the decision boundary becomes, 
+which can cause overfitting.
+
+feature scaling is not a requirement for decision tree algorithms.
+
+scikit-learn can export decision trees as .dot files (see page 89 for details)
+
+
+Random Forests (RF)
+Popular due to good classification performance, scalability, and ease of use.
+
+Thought of as an ensemble of decision trees.
+
+Combine weak learners to create a strong learner that has better generalization
+error and is less susceptible to overfitting.
+
+Algorithm:
+  1. randomly choose n samples from the training set with replacement
+  2. Grow a decision tree from sample. At each node:
+    1. select random 'd' features without replacement
+    2. split the node using the feature the provides the best split according
+      to the objective function, by maximizing the IG
+  3. repeat steps 1-2 k times
+  4. Aggregate the prediction by each tree to assign the class label by majority
+    vote. (chapter 7 details this more)
+    
+Difference between decision trees is that not all features are being evaluated
+in step 2, only a random sample subset of those features. However, they don't 
+offer the same level of interpretability as decision trees. 
+
+RF don't need  to focus on good parameter choices. 
+Don't need to prune
+We only care about k, the number of trees
+More trees the better, but at the expense of an increased computation cost.
+
+
+
+
+K-Nearest Neighbors (KNN) - lazy learning algorithm
+
+last supervised learning algorithm in chapter 3
+
+lazy, because it doesn't learn from a discriminative function from the training
+data, but memorizes the training dataset instead.
+
+Algorithm:
+  1. Choose the number of k and a distance metric
+  2. Find the k nearest neighbors of the sample that we want to classify
+  3. Assign the class label by majority vote
+  
+Classifier adapts as we collect new training data. More costly as the dataset
+grows. KD-tree implementations help efficiency. 
+
+Needs:
+The right choice of k is crucial between underfitting and overfitting. 
+Appropriate distance metric (most often Euclidean)
+
+Minkowski distance is just a generalization of Euclidean and Manhattan distance.
+(formula on page 95)
+p = 1, Manhattan
+p = 2, Euclidean
+
+Avoid the "Curse of Dimensionality"
+feature selection and dimension reduction are good for KNN and decision trees.
+
+                       
+                            
  
 
 
