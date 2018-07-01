@@ -1,0 +1,40 @@
+Chapter 4 (Data Pre-Processing) Notes:
+
+Key preprocessing aspects for building successful learning models:
+  1. removing and imputing missing values from the dataset
+  2. getting categorical data into shape for ML algorithms
+  3. selecting relevant features for the model construction
+  
+Sometimes it's better just to remove a sample row or feature column entirely
+with missing data.
+
+However, the disadvantage is that too many samples may be removed, which makes
+reliable analysis impossible.
+
+Similarly, removing entire feature columns there's the risk of losing valuable
+information that the classifier needs to distinguish a sample into a class.
+
+Alternative:
+Interpolation techniques: filling in missing data values with estimates based
+on other training samples in the data set.
+
+One such technique is called "mean imputation", where the missing value
+is replaced with the mean value of the entire feature column. Scikit-learn
+provides the Imputer class for this.
+
+However, not all data is numerical. For categorical data feature columns there
+are two distinct feature groups: nominal and ordinal features.
+
+ordinal: features that can be sorted or order (such as t-shirt size; XL > L > M)
+nominal: features that can't be ordered (such as t-shirt color)
+
+Good Practice:
+  1. map integer values onto class labels
+  2. map integer values onto ordinal values
+  3. one hot encoding for nominal values
+
+One hot encoding: create a new dummy feature for each unique value in a nominal
+feature column. Binary values can then be used to indicate something like a 
+color of a sample.
+
+
