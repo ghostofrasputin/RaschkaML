@@ -38,3 +38,89 @@ feature column. Binary values can then be used to indicate something like a
 color of a sample.
 
 
+
+Feature Scaling:
+
+Feature Scaling is crucial to preprocessing to optimize most ML algorithm's 
+performance.
+Decision Trees and Random Forests don't need feature scaling.
+
+Normalization: rescaling features to a range of [0, 1]
+Scikit-learn provides min-max scaling for normalization.
+Good for creating values in a bounded interval.
+
+x(i) norm = x(i) - xmin / xmax - min
+
+Standardization:
+Easier to learn the weights since most ML algorithms initialize their weights
+to 0, so standardization centers the feature columns at mean 0 with standard
+deviation of 1 so the feature columns take the form of a normal distribution.
+Standardization also maintains useful information about outliers and makes the
+algorithm less sensitive to them compared to min-max scaling, which scales
+the data to a limited range of values.
+
+x(i) std = x(i) - u(x) / o(x)
+
+u(x) is the sample mean of a particular feature column
+o(x) is the corresponding standard deviation.
+
+Scikit-learn provides standard scaler for standardization.
+
+
+If a model performs much better on a training dataset than on the test set, this
+is an indicator for overfitting. 
+
+Overfitting (high variance) means that the model fits the parameters 
+too closely to the particular observations in the training dataset, but does 
+not generalize well to real data. A reason for overfitting is that the model
+is too complex for the given training data.
+
+Solutions for overfitting:
+  1. Collect more training data (often not applicable)
+  2. Introduce a penalty for complexity via regularization
+  3. Choose a simpler model with fewer parameters
+  4. Reduce the dimensionality of the data
+  
+Regularization can be thought of as adding a penalty term to the cost function
+to encourage smaller weights, thus is penalizes large weights.
+L1 Regularization is absolute. diamond shape
+L2 Regularization is quadratic. circle shape
+
+
+Dimensionality  Reduction:
+  Reduce complexity of a model and avoid overfitting, useful for unregularized
+  models 
+
+1. feature selection: select subset of original features
+2. feature extraction: we derive information from the feature set to construct 
+  a new feature subspace. (focus of chapter 5)
+  
+Sequential feature selection algorithms (SFS) are a family of greedy search 
+algorithms. that are used to reduce an initial d-dimensional feature space to a
+k-dimensional feature space, where k < d.
+
+Goal of SFS algorithms is to automatically select a subset of features that are
+most relevant to the problem to improve computational efficiency or reduce the
+generalization error of the model by removing irrelevant features or noise, 
+which can be useful for algorithms that don't support regularization.
+
+Example:
+Sequential Backward Selection (SBS): aims to reduce dimensionality and in some
+cases improves the prediction power of the model if it suffers overfitting.
+  1. Initialize the algorithm with k=d, where d is the dimensionality of the
+    full feature space
+  2. Determine the feature x that maximizes the criterion x = arg max J(Xk-x)
+    where x is part of set X
+  3. Remove the feature x from the feature set
+  4. Terminate if k equals the number of desired features, if not go to step 2
+  
+
+Random Forests can measure feature importance as the averaged impurity decrease
+the computed from all decision trees in the forest without making assumptions
+whether our data is linearly separable or not. Scikit Random Forest collects
+feature importance already. 
+
+Drawback:
+if 2 or more features are highly correlated, one feature may be ranked really 
+high, while the other(s) may not be fully captured. Important only if we care
+about feature interpretation, not the predictive performance of the model.
