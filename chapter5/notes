@@ -1,0 +1,57 @@
+Chapter 5 (Compressing Data via Dimensionality Reduction) Notes:
+
+Alternative of feature selection is feature extraction. 
+
+There are 3 fundamental techniques that will help summarize the information
+content of a dataset by transforming it onto a new feature subspace of lower
+dimensionality than the original one. Data compression is important in ML as
+it helps store and analyze the increasing amounts of data produced and 
+collected.
+
+1. Principal Component Analysis (PCA) for unsupervised data compression
+2. Linear Discriminant Analysis (LDA) as a supervised dimensionality
+  reduction technique for maximizing class separability
+3. Kernel Principal Component Analysis (KPCA) for nonlinear dimensionality 
+  reduction
+
+
+
+Principal Component Analysis (PCA)
+  PCA is an unsupervised linear transformation technique most prominently 
+used for dimensionality reduction. PCA is also used for exploratory analysis,
+de-noising of signal in stock market trading, and the analysis of genome data
+and expression levels in gene expression levels in the field of bioinformatics.
+
+PCA identifies patterns in the data based on the correlation between features
+
+PCA aims to find the directions of maximum variance in high-dimensional data
+and projects it onto a new subspace with equal or fewer dimensions than the 
+original one. 
+
+The orthogonal axes (principal components) of the new subspace can be
+interpreted as the directions of maximum variance given the constraint that
+the new feature axes are orthogonal to each other.
+
+For dimensionality reduction, a D by K matrix is constructed that allows a 
+sample vector x onto a new k-dimensional feature subspace that has fewer
+dimensions than the original d-dimensional feature space
+
+PCA directions are highly sensitive to data scaling, so features NEED to be 
+standardized before to using PCA. 
+
+1. standardize the d-dimensional dataset
+2. construct the covariance matrix
+3. decompose the covariance matrix into its eigenvectors and eigenvalues
+4. select k eigenvectors that correspond to the k largest eigenvalues, where
+  k is the dimensionality of the new feature subspace (k <= d)
+5. construct a projection matrix W from the "top" k eigenvalues
+6. Transform the d-dimensional input dataset X using the projection matrix W
+  to obtain the new k-dimensional feature subspace
+  
+The eigenvectors of the covariance matrix represent the principal components
+(the directions of maximum variance), whereas the corresponding eigenvalues
+will define the magnitude of the principal components.
+
+Example:
+  For the wine dataset, there are 13 eigenvectors and eigenvalues from the 
+  13 by 13-dimensional covariance matrix. 
