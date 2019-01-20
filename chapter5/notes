@@ -55,3 +55,25 @@ will define the magnitude of the principal components.
 Example:
   For the wine dataset, there are 13 eigenvectors and eigenvalues from the 
   13 by 13-dimensional covariance matrix. 
+  
+An eigen vector v satisfies the following condition where lambda is a 
+scalar eigen value:
+
+E(v) = lambda v
+
+Use NumPy linalg.eig function to return a the tuple og eigen values and eigen
+vectors
+
+The variance explained ratio of an eigenvalue, lambda(j), is the fraction of
+an eigenvalue, lambda(j), and the toal sum of the eigenvalues:
+
+lamba(j) / E(i->d) lambda(i)
+
+PCA vs Random Forests:
+The variance plot of the wine data set is similar to the feature importance
+calculated by Random Forests in Chapter 4, but PCA is an unsupervised method,
+which means that information about the class labels is ignored, whereas Random
+Forests uses the class membership info to compute the node impurities, variance
+measures the spread of values along a feature axis.
+
+  
